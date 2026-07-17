@@ -4,7 +4,7 @@
 #include <netinet/in.h> // for sockaddr_in
 #include <arpa/inet.h> //for inet_addr,inet_pton etc..
 #include<cstring> //for strlen
-
+#include<sstream> //for stringStream
 
 int main(){
 
@@ -77,27 +77,83 @@ int main(){
     ssize_t bytesReceived = recv(clientSocket,buffer,sizeof(buffer),0);
     if(bytesReceived == -1){
         std::cerr<<"[-] Failed to recieve \n";
-        close(serverSocket);
         close(clientSocket);
+        close(serverSocket);
         return 1;
     }
     
     std::cout<<"[+] Received "<<bytesReceived<<" bytes\n";
 
-    std::cout<<"====HTTP REQUEST====\n";
-    std::cout.write(buffer,bytesReceived);
-    std::cout<<"\n";
+    // parsing the request 
+
+    std::string request(buffer,bytesReceived); // converting buffer from char to string
+    std::cout<<request<<"\n";
+    size_t endOfLine = request.find("\r\n"); //finding the end of request line
+    if (endOfLine == std::string::npos)
+    {
+        std::cout<<"[-] Malformed HTTP request\n";
+
+        close(clientSocket);
+        close(serverSocket);
+        return 1;
+    }
+    
+    std::string requestLine =request.substr(0,endOfLine); //storing the requestline 
+    std::stringstream ss(requestLine); //converting into stringstream
+    std::string method;
+    std::string path;
+    std::string version;
+    if(!(ss>>method>>path>>version)){   //storing request
+        std::cerr<<"[-] Invlaid HTTP request\n";
+
+        close(clientSocket);
+        close(serverSocket);
+        return 1;
+    } 
+
+    // temporary stuff
+    std::cout << "\n===== Parsed Request =====\n";
+    std::cout << "Method : " << method << '\n';
+    std::cout << "Path   : " << path << '\n';
+    std::cout << "Version: " << version << '\n';
+
+    // basic routing
+    std::string body; 
+    std::string statusLine = "HTTP/1.1 200 OK";
+    if (method != "GET")
+    {
+        statusLine = "HTTP/1.1 405 Method Not Allowed";
+        body = "Only GET requests are supported.";
+    }
+    else if (path == "/")
+    {
+        body = "Welcome to my HTTP Server!";
+    }
+    else if (path == "/about")
+    {
+        body = "This server was built from scratch in C++.";
+    }
+    else
+    {
+        statusLine = "HTTP/1.1 404 Not Found";
+        body = "404 Not Found";
+    }
 
     // sending a response to the kernel
-    const char* response = "HTTP/1.1 200 OK\r\n""Content-Type: text/plain\r\n""Content-Length: 11\r\n""\r\n""Hello World";
-
-    ssize_t bytesSent = send(clientSocket,response,strlen(response),0);
+    std::string response = statusLine;
+    response += "\r\n";
+    response+="Content-Type:text/plain";
+    response+="\r\n";
+    response+="Content-Length:"+std::to_string(body.size())+"\r\n";
+    response+="\r\n";
+    response+=body;
+    ssize_t bytesSent = send(clientSocket,response.c_str(),response.size(),0);
 
     if (bytesSent == -1)
     {
         std::cerr<<"[-] Failed in sending response\n";
-        close(serverSocket);
         close(clientSocket);
+        close(serverSocket);
         return 1;
     }
     
