@@ -7,17 +7,55 @@
 #include<sstream> //for stringStream
 #include<string> //for String functions
 #include<fstream> //for file I/O
+#include<unordered_map> //for unordered_map
+#include<cerrno> 
+struct FileResult
+{
+    bool success;
+    std::string content;
+};
 
-std::string readFile(const std::string& path){
+FileResult readFile(const std::string& path){
+    FileResult result{false,""};
     std::ifstream file("public/"+path);
     if (!file)
     {
         std::cerr << "[-] Failed to open file: " << path << '\n';
-        return "";
+        return result;
     }
+    result.success=true;
     std::stringstream ss;
     ss<<file.rdbuf();
-    return ss.str();
+    result.content = ss.str();
+    return result;
+}
+
+std::string getContentType(const std::string& fileName){
+    size_t dot = fileName.find_last_of(".");
+    if (dot == std::string::npos)
+    {
+        return "application/octet-stream";
+    }
+    std::string type = fileName.substr(dot+1);
+    static const std::unordered_map<std::string, std::string> mimeTypes ={
+        {"html", "text/html"},
+        {"css",  "text/css"},
+        {"js",   "application/javascript"},
+        {"png",  "image/png"},
+        {"jpg",  "image/jpeg"},
+        {"jpeg", "image/jpeg"},
+        {"gif",  "image/gif"},
+        {"svg",  "image/svg+xml"},
+        {"ico",  "image/x-icon"},
+        {"txt",  "text/plain"},
+        {"json", "application/json"}
+    };
+    auto it = mimeTypes.find(type);
+    if (it != mimeTypes.end())
+    {
+        return it->second;
+    }
+    return "application/octet-stream";
 }
 
 int main(){
@@ -29,6 +67,8 @@ int main(){
         return 1;
     }
 
+    int opt = 1;
+    setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
     std::cout<<"[+] Socket created successfully\n";
 
     // Configure server address
@@ -46,7 +86,7 @@ int main(){
     // Binding to a port
     
     if (bind(serverSocket,reinterpret_cast<sockaddr*>(&serverAddress),sizeof(serverAddress)) == -1){
-        std::cerr<<"[-] Bind failed\n";
+        std::cerr<<"[-] Bind failed\n"<<strerror(errno);
         close(serverSocket);
         return 1;
     }
@@ -132,54 +172,50 @@ int main(){
     std::cout << "Version: " << version << '\n';
 
     // basic routing
-    std::string body; 
+    FileResult body; 
     std::string statusLine = "HTTP/1.1 200 OK";
     std::string fileName;
-    
-    // if (method != "GET")
-    // {
-    //     statusLine = "HTTP/1.1 405 Method Not Allowed";
-    //     body = readFile("405.html");
-    // }
-    // else if (path == "/" || path == "/index" || path =="/index.html")
-    // {
-    //     body = readFile("index.html");
-    // }
-    // else if (path == "/about" || path == "/about.html")
-    // {
-    //     body = readFile("about.html");
-    // }
-    // else
-    // {
-    //     statusLine = "HTTP/1.1 404 Not Found";
-    //     body = readFile("404.html");
-    // }
 
     if (method != "GET"){
         statusLine = "HTTP/1.1 405 Method Not Allowed";
         fileName = "405.html";
-    }else if (path == "/")
-    {
-        fileName = "index.html";
-    }else{
-        fileName = path.substr(1);
-    }
+        body = readFile(fileName);
+        
+        if (!body.success)
+        {
+            body.success = true;
+            body.content = "<h1>405 Method Not Allowed</h1>";
+        }
+    }else{ 
+        if (path == "/"){
+                fileName = "index.html";
+        }
+        else{
+                fileName = path.substr(1);
+        }
 
-    body = readFile(fileName);
-    if (body.empty())
-    {
-        statusLine ="HTTP/1.1 404 Not Found";
-        body = readFile("404.html");
+        body = readFile(fileName);
+        if (!body.success)
+        {
+            statusLine ="HTTP/1.1 404 Not Found";
+            fileName = "404.html";
+            body = readFile(fileName);
+            if (!body.success)
+            {
+                body.success = true;
+                body.content = "<h1>404 Not Found</h1>";
+            }
+        }
     }
     
     
 
     // sending a response to the kernel
     std::string response = statusLine+ "\r\n";
-    response += "Content-Type: text/html\r\n";
-    response += "Content-Length: " + std::to_string(body.size()) + "\r\n";
+    response += "Content-Type: "+getContentType(fileName)+"\r\n";
+    response += "Content-Length: " + std::to_string(body.content.size()) + "\r\n";
     response += "\r\n";
-    response += body;
+    response += body.content;
     ssize_t bytesSent = send(clientSocket,response.c_str(),response.size(),0);
 
     if (bytesSent == -1)
