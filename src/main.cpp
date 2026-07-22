@@ -5,6 +5,20 @@
 #include <arpa/inet.h> //for inet_addr,inet_pton etc..
 #include<cstring> //for strlen
 #include<sstream> //for stringStream
+#include<string> //for String functions
+#include<fstream> //for file I/O
+
+std::string readFile(const std::string& path){
+    std::ifstream file("public/"+path);
+    if (!file)
+    {
+        std::cerr << "[-] Failed to open file: " << path << '\n';
+        return "";
+    }
+    std::stringstream ss;
+    ss<<file.rdbuf();
+    return ss.str();
+}
 
 int main(){
 
@@ -120,33 +134,52 @@ int main(){
     // basic routing
     std::string body; 
     std::string statusLine = "HTTP/1.1 200 OK";
-    if (method != "GET")
-    {
+    std::string fileName;
+    
+    // if (method != "GET")
+    // {
+    //     statusLine = "HTTP/1.1 405 Method Not Allowed";
+    //     body = readFile("405.html");
+    // }
+    // else if (path == "/" || path == "/index" || path =="/index.html")
+    // {
+    //     body = readFile("index.html");
+    // }
+    // else if (path == "/about" || path == "/about.html")
+    // {
+    //     body = readFile("about.html");
+    // }
+    // else
+    // {
+    //     statusLine = "HTTP/1.1 404 Not Found";
+    //     body = readFile("404.html");
+    // }
+
+    if (method != "GET"){
         statusLine = "HTTP/1.1 405 Method Not Allowed";
-        body = "Only GET requests are supported.";
-    }
-    else if (path == "/")
+        fileName = "405.html";
+    }else if (path == "/")
     {
-        body = "Welcome to my HTTP Server!";
-    }
-    else if (path == "/about")
-    {
-        body = "This server was built from scratch in C++.";
-    }
-    else
-    {
-        statusLine = "HTTP/1.1 404 Not Found";
-        body = "404 Not Found";
+        fileName = "index.html";
+    }else{
+        fileName = path.substr(1);
     }
 
+    body = readFile(fileName);
+    if (body.empty())
+    {
+        statusLine ="HTTP/1.1 404 Not Found";
+        body = readFile("404.html");
+    }
+    
+    
+
     // sending a response to the kernel
-    std::string response = statusLine;
+    std::string response = statusLine+ "\r\n";
+    response += "Content-Type: text/html\r\n";
+    response += "Content-Length: " + std::to_string(body.size()) + "\r\n";
     response += "\r\n";
-    response+="Content-Type:text/plain";
-    response+="\r\n";
-    response+="Content-Length:"+std::to_string(body.size())+"\r\n";
-    response+="\r\n";
-    response+=body;
+    response += body;
     ssize_t bytesSent = send(clientSocket,response.c_str(),response.size(),0);
 
     if (bytesSent == -1)
