@@ -1,0 +1,3 @@
+/mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles/cpp-http-server.dir
+/mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles/rebuild_cache.dir
