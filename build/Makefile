@@ -225,6 +225,30 @@ src/HttpResponse.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/HttpResponse.cpp.s
 .PHONY : src/HttpResponse.cpp.s
 
+src/Utils.o: src/Utils.cpp.o
+.PHONY : src/Utils.o
+
+# target to build an object file
+src/Utils.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/Utils.cpp.o
+.PHONY : src/Utils.cpp.o
+
+src/Utils.i: src/Utils.cpp.i
+.PHONY : src/Utils.i
+
+# target to preprocess a source file
+src/Utils.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/Utils.cpp.i
+.PHONY : src/Utils.cpp.i
+
+src/Utils.s: src/Utils.cpp.s
+.PHONY : src/Utils.s
+
+# target to generate assembly for a file
+src/Utils.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/Utils.cpp.s
+.PHONY : src/Utils.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -270,6 +294,9 @@ help:
 	@echo "... src/HttpResponse.o"
 	@echo "... src/HttpResponse.i"
 	@echo "... src/HttpResponse.s"
+	@echo "... src/Utils.o"
+	@echo "... src/Utils.i"
+	@echo "... src/Utils.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

@@ -8,6 +8,6 @@ struct FileResult
     std::string content;
 };
 
-FileResult readFile(const std::string& path);
+FileResult readFile(const std::string& );
 
-std::string getContentType(const std::string& fileName);
+std::string getContentType(const std::string& );

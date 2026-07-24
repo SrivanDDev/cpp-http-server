@@ -69,19 +69,19 @@ include CMakeFiles/cpp-http-server.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/cpp-http-server.dir/flags.make
 
-CMakeFiles/cpp-http-server.dir/src/main.cpp.o: CMakeFiles/cpp-http-server.dir/flags.make
-CMakeFiles/cpp-http-server.dir/src/main.cpp.o: /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/main.cpp
-CMakeFiles/cpp-http-server.dir/src/main.cpp.o: CMakeFiles/cpp-http-server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/cpp-http-server.dir/src/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cpp-http-server.dir/src/main.cpp.o -MF CMakeFiles/cpp-http-server.dir/src/main.cpp.o.d -o CMakeFiles/cpp-http-server.dir/src/main.cpp.o -c /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/main.cpp
+CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o: CMakeFiles/cpp-http-server.dir/flags.make
+CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o: /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/ClientHandler.cpp
+CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o: CMakeFiles/cpp-http-server.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o -MF CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o.d -o CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o -c /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/ClientHandler.cpp
 
-CMakeFiles/cpp-http-server.dir/src/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cpp-http-server.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/main.cpp > CMakeFiles/cpp-http-server.dir/src/main.cpp.i
+CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/ClientHandler.cpp > CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.i
 
-CMakeFiles/cpp-http-server.dir/src/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cpp-http-server.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/main.cpp -o CMakeFiles/cpp-http-server.dir/src/main.cpp.s
+CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/ClientHandler.cpp -o CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.s
 
 CMakeFiles/cpp-http-server.dir/src/FileSystem.cpp.o: CMakeFiles/cpp-http-server.dir/flags.make
 CMakeFiles/cpp-http-server.dir/src/FileSystem.cpp.o: /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/FileSystem.cpp
@@ -125,39 +125,55 @@ CMakeFiles/cpp-http-server.dir/src/HttpResponse.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cpp-http-server.dir/src/HttpResponse.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/HttpResponse.cpp -o CMakeFiles/cpp-http-server.dir/src/HttpResponse.cpp.s
 
-CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o: CMakeFiles/cpp-http-server.dir/flags.make
-CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o: /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/ClientHandler.cpp
-CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o: CMakeFiles/cpp-http-server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o -MF CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o.d -o CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o -c /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/ClientHandler.cpp
+CMakeFiles/cpp-http-server.dir/src/main.cpp.o: CMakeFiles/cpp-http-server.dir/flags.make
+CMakeFiles/cpp-http-server.dir/src/main.cpp.o: /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/main.cpp
+CMakeFiles/cpp-http-server.dir/src/main.cpp.o: CMakeFiles/cpp-http-server.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/cpp-http-server.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cpp-http-server.dir/src/main.cpp.o -MF CMakeFiles/cpp-http-server.dir/src/main.cpp.o.d -o CMakeFiles/cpp-http-server.dir/src/main.cpp.o -c /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/main.cpp
 
-CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/ClientHandler.cpp > CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.i
+CMakeFiles/cpp-http-server.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cpp-http-server.dir/src/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/main.cpp > CMakeFiles/cpp-http-server.dir/src/main.cpp.i
 
-CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/ClientHandler.cpp -o CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.s
+CMakeFiles/cpp-http-server.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cpp-http-server.dir/src/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/main.cpp -o CMakeFiles/cpp-http-server.dir/src/main.cpp.s
+
+CMakeFiles/cpp-http-server.dir/src/Utils.cpp.o: CMakeFiles/cpp-http-server.dir/flags.make
+CMakeFiles/cpp-http-server.dir/src/Utils.cpp.o: /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/Utils.cpp
+CMakeFiles/cpp-http-server.dir/src/Utils.cpp.o: CMakeFiles/cpp-http-server.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/cpp-http-server.dir/src/Utils.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cpp-http-server.dir/src/Utils.cpp.o -MF CMakeFiles/cpp-http-server.dir/src/Utils.cpp.o.d -o CMakeFiles/cpp-http-server.dir/src/Utils.cpp.o -c /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/Utils.cpp
+
+CMakeFiles/cpp-http-server.dir/src/Utils.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cpp-http-server.dir/src/Utils.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/Utils.cpp > CMakeFiles/cpp-http-server.dir/src/Utils.cpp.i
+
+CMakeFiles/cpp-http-server.dir/src/Utils.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cpp-http-server.dir/src/Utils.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/SRIVA/Projects/cpp-http-server/src/Utils.cpp -o CMakeFiles/cpp-http-server.dir/src/Utils.cpp.s
 
 # Object files for target cpp-http-server
 cpp__http__server_OBJECTS = \
-"CMakeFiles/cpp-http-server.dir/src/main.cpp.o" \
+"CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o" \
 "CMakeFiles/cpp-http-server.dir/src/FileSystem.cpp.o" \
 "CMakeFiles/cpp-http-server.dir/src/HttpParser.cpp.o" \
 "CMakeFiles/cpp-http-server.dir/src/HttpResponse.cpp.o" \
-"CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o"
+"CMakeFiles/cpp-http-server.dir/src/main.cpp.o" \
+"CMakeFiles/cpp-http-server.dir/src/Utils.cpp.o"
 
 # External object files for target cpp-http-server
 cpp__http__server_EXTERNAL_OBJECTS =
 
-cpp-http-server: CMakeFiles/cpp-http-server.dir/src/main.cpp.o
+cpp-http-server: CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o
 cpp-http-server: CMakeFiles/cpp-http-server.dir/src/FileSystem.cpp.o
 cpp-http-server: CMakeFiles/cpp-http-server.dir/src/HttpParser.cpp.o
 cpp-http-server: CMakeFiles/cpp-http-server.dir/src/HttpResponse.cpp.o
-cpp-http-server: CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o
+cpp-http-server: CMakeFiles/cpp-http-server.dir/src/main.cpp.o
+cpp-http-server: CMakeFiles/cpp-http-server.dir/src/Utils.cpp.o
 cpp-http-server: CMakeFiles/cpp-http-server.dir/build.make
 cpp-http-server: CMakeFiles/cpp-http-server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable cpp-http-server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable cpp-http-server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/cpp-http-server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
