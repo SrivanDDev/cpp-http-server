@@ -129,6 +129,30 @@ cpp-http-server/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/build
 .PHONY : cpp-http-server/fast
 
+src/ClientHandler.o: src/ClientHandler.cpp.o
+.PHONY : src/ClientHandler.o
+
+# target to build an object file
+src/ClientHandler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.o
+.PHONY : src/ClientHandler.cpp.o
+
+src/ClientHandler.i: src/ClientHandler.cpp.i
+.PHONY : src/ClientHandler.i
+
+# target to preprocess a source file
+src/ClientHandler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.i
+.PHONY : src/ClientHandler.cpp.i
+
+src/ClientHandler.s: src/ClientHandler.cpp.s
+.PHONY : src/ClientHandler.s
+
+# target to generate assembly for a file
+src/ClientHandler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/ClientHandler.cpp.s
+.PHONY : src/ClientHandler.cpp.s
+
 src/FileSystem.o: src/FileSystem.cpp.o
 .PHONY : src/FileSystem.o
 
@@ -152,6 +176,54 @@ src/FileSystem.s: src/FileSystem.cpp.s
 src/FileSystem.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/FileSystem.cpp.s
 .PHONY : src/FileSystem.cpp.s
+
+src/HttpParser.o: src/HttpParser.cpp.o
+.PHONY : src/HttpParser.o
+
+# target to build an object file
+src/HttpParser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/HttpParser.cpp.o
+.PHONY : src/HttpParser.cpp.o
+
+src/HttpParser.i: src/HttpParser.cpp.i
+.PHONY : src/HttpParser.i
+
+# target to preprocess a source file
+src/HttpParser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/HttpParser.cpp.i
+.PHONY : src/HttpParser.cpp.i
+
+src/HttpParser.s: src/HttpParser.cpp.s
+.PHONY : src/HttpParser.s
+
+# target to generate assembly for a file
+src/HttpParser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/HttpParser.cpp.s
+.PHONY : src/HttpParser.cpp.s
+
+src/HttpResponse.o: src/HttpResponse.cpp.o
+.PHONY : src/HttpResponse.o
+
+# target to build an object file
+src/HttpResponse.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/HttpResponse.cpp.o
+.PHONY : src/HttpResponse.cpp.o
+
+src/HttpResponse.i: src/HttpResponse.cpp.i
+.PHONY : src/HttpResponse.i
+
+# target to preprocess a source file
+src/HttpResponse.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/HttpResponse.cpp.i
+.PHONY : src/HttpResponse.cpp.i
+
+src/HttpResponse.s: src/HttpResponse.cpp.s
+.PHONY : src/HttpResponse.s
+
+# target to generate assembly for a file
+src/HttpResponse.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/src/HttpResponse.cpp.s
+.PHONY : src/HttpResponse.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -186,9 +258,18 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... cpp-http-server"
+	@echo "... src/ClientHandler.o"
+	@echo "... src/ClientHandler.i"
+	@echo "... src/ClientHandler.s"
 	@echo "... src/FileSystem.o"
 	@echo "... src/FileSystem.i"
 	@echo "... src/FileSystem.s"
+	@echo "... src/HttpParser.o"
+	@echo "... src/HttpParser.i"
+	@echo "... src/HttpParser.s"
+	@echo "... src/HttpResponse.o"
+	@echo "... src/HttpResponse.i"
+	@echo "... src/HttpResponse.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

@@ -81,12 +81,12 @@ clean: CMakeFiles/cpp-http-server.dir/clean
 CMakeFiles/cpp-http-server.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp-http-server.dir/build.make CMakeFiles/cpp-http-server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles --progress-num=1,2,3 "Built target cpp-http-server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target cpp-http-server"
 .PHONY : CMakeFiles/cpp-http-server.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/cpp-http-server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/cpp-http-server.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/SRIVA/Projects/cpp-http-server/build/CMakeFiles 0
 .PHONY : CMakeFiles/cpp-http-server.dir/rule
