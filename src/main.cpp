@@ -17,8 +17,27 @@
 
 
 
-int main()
+int main(int argc, char* argv[])
 {
+    int port = 8080;
+    if (argc > 1)
+    {
+        try
+        {
+            port = std::stoi(argv[1]);
+        }
+        catch (const std::exception&)
+        {
+            std::cerr << "[-] Port must be a number\n";
+            return 1;
+        }
+    }
+
+    if (port < 1 || port > 65535)
+    {
+        std::cerr << "[-] Port must be between 1 and 65535\n";
+        return 1;
+    }
 
     // create a socket
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -43,7 +62,7 @@ int main()
 
     sockaddr_in serverAddress{};
     serverAddress.sin_family = AF_INET;
-    serverAddress.sin_port = htons(8080);
+    serverAddress.sin_port = htons(port);
     int result = inet_pton(AF_INET, "127.0.0.1", &serverAddress.sin_addr);
     if (result != 1)
     {
@@ -63,7 +82,7 @@ int main()
         return 1;
     }
 
-    std::cout << "[+] Successfully Bound to port 8080\n";
+    std::cout << "[+] Successfully Bound to port " << port << "\n";
 
     // start listening for incoming connections
 
@@ -76,7 +95,7 @@ int main()
         return 1;
     }
 
-    std::cout << "[+] Server is listening on 127.0.0.1:8080\n";
+    std::cout << "[+] Server is listening on 127.0.0.1:" << port << "\n";
     while (true)
     {
         // creating a buufer so that kernel can store data while we accept the

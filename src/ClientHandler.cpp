@@ -51,7 +51,13 @@ void handleClient(int clientSocket)
     std::string statusLine = "HTTP/1.1 200 OK";
     std::string fileName;
 
-    if (request.method != "GET")
+    if (request.method == "GET" && request.path == "/health")
+    {
+        fileName = "health.txt";
+        body.success = true;
+        body.content = "ok\n";
+    }
+    else if (request.method != "GET")
     {
         statusLine = "HTTP/1.1 405 Method Not Allowed";
         fileName = "405.html";
