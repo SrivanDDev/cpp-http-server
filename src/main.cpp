@@ -1,21 +1,15 @@
-#include "FileSystem.h"
-#include "Request.h"
-#include "HttpParser.h"
-#include "HttpResponse.h"
 #include "ClientHandler.h"
 
-
-#include <arpa/inet.h> //for inet_addr,inet_pton etc..
+#include <arpa/inet.h> //for inet_pton
 #include <cerrno>
-#include <cstring> //for strlen
+#include <cstring> //for strerror
 #include <iostream>
 #include <netinet/in.h> // for sockaddr_in
-
 #include <string>       //for String functions
 #include <sys/socket.h> // Core socket functions and structures
+#include <system_error>
+#include <thread>
 #include <unistd.h>     //for close function
-
-
 
 int main(int argc, char* argv[])
 {
@@ -120,8 +114,18 @@ int main(int argc, char* argv[])
 
         std::cout << "[+] Successfully accepted the client\n";
 
-        // handles the client
-        handleClient(clientSocket);
+        // Handle each client on its own thread so one slow client doesn't
+        // block everyone else. detach() lets the thread clean itself up;
+        // handleClient always closes the socket when it's done.
+        try
+        {
+            std::thread(handleClient, clientSocket).detach();
+        }
+        catch (const std::system_error &)
+        {
+            std::cerr << "[-] Could not start a thread for the client\n";
+            close(clientSocket);
+        }
     }
     close(serverSocket);
     return 0;

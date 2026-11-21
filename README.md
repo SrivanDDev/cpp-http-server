@@ -11,6 +11,12 @@ cmake --build build
 ./build/cpp-http-server 9000      # choose a different port
 ```
 
+Run the tests from the repository root:
+
+```bash
+ctest --test-dir build --output-on-failure
+```
+
 The server serves files from `public/` and includes a simple health check at
 `GET /health`. It currently supports static `GET` requests, common MIME types,
 query-string parsing, and custom 404/405 pages.
