@@ -97,6 +97,14 @@ void handleClient(int clientSocket)
         }
     }
 
+    // The last recv() may have delivered both the overflow and the terminator,
+    // so check the final header size too.
+    if (headerEnd + 4 > MAX_HEADER_BYTES)
+    {
+        sendErrorAndClose(clientSocket, "HTTP/1.1 431 Request Header Fields Too Large", "431 Request Header Fields Too Large");
+        return;
+    }
+
     // 2. Parse the request line and headers.
     Request request = parseRequest(rawRequest.substr(0, headerEnd + 4));
     if (!request.isValid)
