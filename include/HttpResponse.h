@@ -1,4 +1,5 @@
 #pragma once
-#include<string>
+#include <string>
 
-std::string buildResponse(const std::string& , const std::string& , const std::string&);
+// extraHeaders must be complete header lines, each ending in "\r\n".
+std::string buildResponse(const std::string& , const std::string& , const std::string&, const std::string& extraHeaders = "");
