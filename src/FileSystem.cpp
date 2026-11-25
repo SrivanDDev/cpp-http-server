@@ -6,13 +6,14 @@
 #include <sstream>
 #include <unordered_map>
 
-// Returns true if `path` (relative to public/) resolves to a regular file inside public/.
-static bool isInsidePublic(const std::string& path, std::filesystem::path& resolved)
+// Returns true if the resolved file stays inside the configured document root.
+static bool isInsideRoot(const std::string &docRoot, const std::string &path,
+                         std::filesystem::path &resolved)
 {
     namespace fs = std::filesystem;
     std::error_code ec;
 
-    fs::path root = fs::canonical("public", ec);
+    fs::path root = fs::canonical(docRoot, ec);
     if (ec)
         return false;
 
@@ -33,10 +34,11 @@ static bool isInsidePublic(const std::string& path, std::filesystem::path& resol
     return fs::is_regular_file(resolved, ec);
 }
 
-FileResult readFile(const std::string& path){
-    FileResult result{false,""};
+FileResult readFile(const std::string &docRoot, const std::string &path)
+{
+    FileResult result{false, ""};
     std::filesystem::path resolved;
-    if (path.find('\0') != std::string::npos || !isInsidePublic(path, resolved))
+    if (path.find('\0') != std::string::npos || !isInsideRoot(docRoot, path, resolved))
     {
         std::cerr << "[-] Refused or missing file: " << path << '\n';
         return result;
@@ -48,33 +50,26 @@ FileResult readFile(const std::string& path){
         std::cerr << "[-] Failed to open file: " << path << '\n';
         return result;
     }
-    result.success=true;
+    result.success = true;
     std::stringstream ss;
-    ss<<file.rdbuf();
+    ss << file.rdbuf();
     result.content = ss.str();
     return result;
 }
 
-std::string getContentType(const std::string& fileName){
+std::string getContentType(const std::string &fileName)
+{
     size_t dot = fileName.find_last_of(".");
     if (dot == std::string::npos)
     {
         return "application/octet-stream";
     }
-    std::string type = fileName.substr(dot+1);
-    static const std::unordered_map<std::string, std::string> mimeTypes ={
-        {"html", "text/html"},
-        {"css",  "text/css"},
-        {"js",   "application/javascript"},
-        {"png",  "image/png"},
-        {"jpg",  "image/jpeg"},
-        {"jpeg", "image/jpeg"},
-        {"gif",  "image/gif"},
-        {"svg",  "image/svg+xml"},
-        {"ico",  "image/x-icon"},
-        {"txt",  "text/plain"},
-        {"json", "application/json"}
-    };
+    std::string type = fileName.substr(dot + 1);
+    static const std::unordered_map<std::string, std::string> mimeTypes = {
+        {"html", "text/html"}, {"css", "text/css"},         {"js", "application/javascript"},
+        {"png", "image/png"},  {"jpg", "image/jpeg"},       {"jpeg", "image/jpeg"},
+        {"gif", "image/gif"},  {"svg", "image/svg+xml"},    {"ico", "image/x-icon"},
+        {"txt", "text/plain"}, {"json", "application/json"}};
     auto it = mimeTypes.find(type);
     if (it != mimeTypes.end())
     {

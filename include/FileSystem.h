@@ -8,8 +8,6 @@ struct FileResult
     std::string content;
 };
 
-// Reads a file that lives inside public/. Paths that try to escape public/
-// (for example "../README.md") are refused and reported as not found.
-FileResult readFile(const std::string& );
-
-std::string getContentType(const std::string& );
+// Reads a file inside docRoot. Paths that escape the root are reported as not found.
+FileResult readFile(const std::string &docRoot, const std::string &path);
+std::string getContentType(const std::string &fileName);

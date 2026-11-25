@@ -1,7 +1,7 @@
 #include "ClientHandler.h"
 #include "HttpParser.h"
 #include "HttpResponse.h"
-#include "FileSystem.h"
+#include "Router.h"
 
 #include <cctype>
 #include <cerrno>
@@ -9,7 +9,6 @@
 #include <string>
 #include <sys/socket.h> // Core socket functions and structures
 #include <sys/time.h>   // timeval for socket timeouts
-#include <unistd.h>     //for close function
 
 // Limits so one client can't make us buffer unlimited data.
 static const size_t MAX_HEADER_BYTES = 8 * 1024;
@@ -24,13 +23,16 @@ static bool sendAll(int clientSocket, const std::string &data)
     {
         // MSG_NOSIGNAL: if the client hung up, return an error instead of
         // killing the whole server with SIGPIPE.
-        ssize_t sent = send(clientSocket, data.data() + totalSent, data.size() - totalSent, MSG_NOSIGNAL);
+        ssize_t sent =
+            send(clientSocket, data.data() + totalSent, data.size() - totalSent, MSG_NOSIGNAL);
         if (sent == -1)
         {
             if (errno == EINTR)
                 continue;
             return false;
         }
+        if (sent == 0)
+            return false;
         totalSent += sent;
     }
     return true;
@@ -52,14 +54,12 @@ static ssize_t receiveMore(int clientSocket, std::string &buffer)
     return bytesReceived;
 }
 
-static void sendErrorAndClose(int clientSocket, const std::string &statusLine, const std::string &message)
+static void sendError(int clientSocket, int status, const ServerConfig &config)
 {
-    std::string body = "<h1>" + message + "</h1>";
-    sendAll(clientSocket, buildResponse(statusLine, "error.html", body));
-    close(clientSocket);
+    sendAll(clientSocket, serialize(errorResponse(status, config), false));
 }
 
-void handleClient(int clientSocket)
+void handleClient(int clientSocket, const ServerConfig &config)
 {
     // Without a timeout, a client that connects and sends nothing would hold
     // this thread forever.
@@ -74,24 +74,22 @@ void handleClient(int clientSocket)
     {
         if (rawRequest.size() > MAX_HEADER_BYTES)
         {
-            sendErrorAndClose(clientSocket, "HTTP/1.1 431 Request Header Fields Too Large", "431 Request Header Fields Too Large");
+            sendError(clientSocket, 431, config);
             return;
         }
         ssize_t bytesReceived = receiveMore(clientSocket, rawRequest);
         if (bytesReceived == 0)
         {
             std::cout << "[+] Client disconnected\n";
-            close(clientSocket);
             return;
         }
         if (bytesReceived == -1)
         {
             if (errno == EAGAIN || errno == EWOULDBLOCK)
-                sendErrorAndClose(clientSocket, "HTTP/1.1 408 Request Timeout", "408 Request Timeout");
+                sendError(clientSocket, 408, config);
             else
             {
                 std::cerr << "[-] Failed to receive\n";
-                close(clientSocket);
             }
             return;
         }
@@ -101,7 +99,7 @@ void handleClient(int clientSocket)
     // so check the final header size too.
     if (headerEnd + 4 > MAX_HEADER_BYTES)
     {
-        sendErrorAndClose(clientSocket, "HTTP/1.1 431 Request Header Fields Too Large", "431 Request Header Fields Too Large");
+        sendError(clientSocket, 431, config);
         return;
     }
 
@@ -109,7 +107,7 @@ void handleClient(int clientSocket)
     Request request = parseRequest(rawRequest.substr(0, headerEnd + 4));
     if (!request.isValid)
     {
-        sendErrorAndClose(clientSocket, "HTTP/1.1 400 Bad Request", "400 Bad Request");
+        sendError(clientSocket, 400, config);
         return;
     }
 
@@ -125,13 +123,13 @@ void handleClient(int clientSocket)
             allDigits = allDigits && std::isdigit(c);
         if (!allDigits)
         {
-            sendErrorAndClose(clientSocket, "HTTP/1.1 400 Bad Request", "400 Bad Request");
+            sendError(clientSocket, 400, config);
             return;
         }
         contentLength = std::stoull(value);
         if (contentLength > MAX_BODY_BYTES)
         {
-            sendErrorAndClose(clientSocket, "HTTP/1.1 413 Content Too Large", "413 Content Too Large");
+            sendError(clientSocket, 413, config);
             return;
         }
     }
@@ -141,70 +139,16 @@ void handleClient(int clientSocket)
         if (receiveMore(clientSocket, rawRequest) <= 0)
         {
             std::cerr << "[-] Client stopped before sending the full body\n";
-            close(clientSocket);
             return;
         }
     }
     request.body = rawRequest.substr(bodyStart, contentLength);
 
-    // routing
-    FileResult body;
-    std::string statusLine = "HTTP/1.1 200 OK";
-    std::string fileName;
-    std::string extraHeaders;
+    const Response response = route(request, config);
+    std::cout << "[+] " << request.method << ' ' << request.path << " -> " << response.status << ' '
+              << reasonPhrase(response.status) << '\n';
 
-    if (request.method == "GET" && request.path == "/health")
-    {
-        fileName = "health.txt";
-        body.success = true;
-        body.content = "ok\n";
-    }
-    else if (request.method != "GET")
-    {
-        statusLine = "HTTP/1.1 405 Method Not Allowed";
-        // HTTP requires a 405 response to say which methods are allowed.
-        extraHeaders = "Allow: GET\r\n";
-        fileName = "405.html";
-        body = readFile(fileName);
-
-        if (!body.success)
-        {
-            body.success = true;
-            body.content = "<h1>405 Method Not Allowed</h1>";
-        }
-    }
-    else
-    {
-        if (request.path == "/")
-        {
-            fileName = "index.html";
-        }
-        else
-        {
-            fileName = request.path.substr(1);
-        }
-
-        body = readFile(fileName);
-        if (!body.success)
-        {
-            statusLine = "HTTP/1.1 404 Not Found";
-            fileName = "404.html";
-            body = readFile(fileName);
-            if (!body.success)
-            {
-                body.success = true;
-                body.content = "<h1>404 Not Found</h1>";
-            }
-        }
-    }
-
-    std::cout << "[+] " << request.method << ' ' << request.path << " -> " << statusLine.substr(9) << '\n';
-
-    // sending a response to the kernel
-    std::string response = buildResponse(statusLine, fileName, body.content, extraHeaders);
-    if (!sendAll(clientSocket, response))
-    {
+    // Persistent connections arrive in M4; M2 keeps one response per connection.
+    if (!sendAll(clientSocket, serialize(response, false)))
         std::cerr << "[-] Failed in sending response\n";
-    }
-    close(clientSocket);
 }
