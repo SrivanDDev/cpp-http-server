@@ -1,5 +1,27 @@
 # cpp-http-server
 
+Build, inspect, and test an HTTP server at the socket level. This project explores request parsing, routing, response serialization, and connection handling.
+
+## Features
+
+- Static GET requests served from a configurable document root
+- Health endpoint at `GET /health`
+- Common MIME types, query-string parsing, and custom 404/405 pages
+- Configurable port and graceful shutdown with SIGINT or SIGTERM
+- Unit and integration tests through CTest
+
+## Try it
+
+After starting the server, run these commands in another terminal:
+
+```bash
+curl -i http://127.0.0.1:8080/health
+curl -i http://127.0.0.1:8080/
+curl -i http://127.0.0.1:8080/missing-file
+```
+
+Use the port you selected if you changed the default.
+
 A small HTTP server built from scratch in C++ using POSIX sockets.
 
 ## Build and run
